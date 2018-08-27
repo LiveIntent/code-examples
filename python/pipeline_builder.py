@@ -139,7 +139,7 @@ class PipelineBuilder(object):
                   'spark.shuffle.file.buffer': '1m',
                   'spark.file.transferTo': 'false',
                   'spark.eventLog.enabled': 'true',
-                  'spark.eventLog.dir': 's3://debug-dwh-liveintent-com/spark-history-server',
+                  'spark.eventLog.dir': 's3://debug-liveintent-com/spark-history-server',
                   'spark.unsafe.sorter.spill.reader.buffer.size': '1m',
                   'spark.shuffle.unsafe.file.output.buffer': '5m',
                   'spark.executor.extraJavaOptions': '"-XX:ParallelGCThreads=4 -XX:+UseParallelGC"'
@@ -343,7 +343,7 @@ class PipelineBuilder(object):
         key = key + '{{ ' + time_variable + ' }}/' + success_file
         path, time_variable = key.split('{{')[0:2]
         time_variable = time_variable.split('}}')[0].strip()
-        path = path.split('//')[1].replace('-dwh-liveintent-com', '').replace('liveintent-dev-dwh/', '').rstrip(
+        path = path.split('//')[1].replace('liveintent-com', '').replace('liveintent-dev/', '').rstrip(
             '/').replace('/', '-').replace(" ", "_")
         task_id = {'yesterday_ds_nodash': 'Yesterday', 'ds_nodash': 'Today'}[
                       time_variable] + ' ' + path.lower() + ' available'

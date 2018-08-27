@@ -22,7 +22,7 @@ default_args = {
     'retries': 0,
     'start_date': datetime(2017, 9, 10),
     'retry_delay': timedelta(minutes=15),
-    'email': ['copenhagen@liveintent.com'],
+    'email': ['spam@liveintent.com'],
     'email_on_failure': True,
     'email_on_retry': True,
     'on_failure_callback': sns_on_failure,
@@ -37,14 +37,14 @@ default_args = {
     'override_command': 'cph_command_override',
     'params': {
         'aws_conn_id': 'cph_emr',
-        'on_failure_target_arn': 'arn:aws:sns:us-east-1:957598027970:datapipeline-error',
+        'on_failure_target_arn': 'arn:aws:sns:us-east-1:23423423423423:datapipeline-error',
         'on_failure_sns_subject': 'FAILED: ID-match airflow job',
         'on_failure_sns_msg': 'ID-match airflow job failed.\
                   Please examine and potentially restart.',
-        'on_success_target_arn': 'arn:aws:sns:us-east-1:957598027970:idmatching-success',
+        'on_success_target_arn': 'arn:aws:sns:us-east-1:23423423423423:idmatching-success',
         'on_success_sns_subject': 'SUCCESS: ID-match airflow job',
         'on_success_sns_msg': 'ID-match airflow job completed successfully.',
-        'on_late_target_arn': 'arn:aws:sns:eu-west-1:957598027970:mojn-maintenance-critical',
+        'on_late_target_arn': 'arn:aws:sns:eu-west-1:23423423423423:mojn-maintenance-critical',
         'on_late_sns_subject': 'SLA_MISSED: ID-match airflow job',
         'on_late_sns_msg': 'ID-match airflow missed its SLA. Please examine.'
     }
@@ -71,7 +71,7 @@ jar_version = Variable.get('cph_jar_version')
 
 # task to push xcoms for the versioned jars for scalding, spark and preprocessor
 def push_xcom_jar_version(ds, **context):
-    bucket = 's3://releases.private.mojn.com'
+    bucket = 's3://releases'
     dwh_scalding_jar = bucket + '/mojn-pipelines/mojn-pipelines_2.11/{}/mojn-pipelines_2.11-{}-assembly.jar'.format(
         jar_version, jar_version)
     spark_jar = bucket + '/spark-dwh/spark-dwh_2.11/{}/spark-dwh_2.11-{}-assembly.jar'.format(
@@ -122,16 +122,12 @@ yesterday_source4_idl_mapping_available = p.s3('{}/source4/partner-mappings/'.fo
                                                 'yesterday_ds_nodash', '_SUCCESS')
 yesterday_source4Idls_available = p.s3('{}/emailhash-to-idl/'.format(internal_keys['External']), 'yesterday_ds_nodash',
                                         '_SUCCESS')
-# yesterday_live_audience_segments_available =
-# p.s3('{}/segment-membership/liveaudience/email-hash/'.format(internal_keys['Segment']), 'yesterday_ds_nodash', '_SUCCESS')
-# yesterday_live_audience_lidid_segments_available
-# = p.s3('{}/segment-membership/liveaudience/lidid/'.format(internal_keys['Segment']), 'yesterday_ds_nodash', '_SUCCESS')
 
 # these could also be inlined below, but having them here makes their definitions easily seen
 
 bid_processing = p.job('com.mojn.dwh.logs.jobs.BidResponsesDWHJob', '--hdfs', '--date', '{{ ds }}',
                        '--mapping-selectors',
-                       's3://mappings-dwh-liveintent-com/mapping-selectors/current-*.txt').trigger(
+                       's3://mappings/mapping-selectors/current-*.txt').trigger(
     p.master_cli('BidProcessing_SUCCESS',
                  """hadoop dfs -touchz {{ var.json.internal_keys.Logs }}/rtb-auction-bids/{{ ds_nodash }}/_SUCCESS""")
 )
@@ -154,7 +150,7 @@ update_source4_IDL = p.job('com.mojn.dwh.external.jobs.Updatesource4IDLJob', '--
 
 gdpr_access = p.spark_job('com.liveintent.dwh.gdpr.GdprAccessDwhJob',
                           job_args=['com.liveintent.dwh.gdpr.GdprAccessDwhJob', '---system', 's3', '--date', '{{ ds }}'],
-                          job_uri='s3://releases.private.mojn.com/com/liveintent/dwh/dwh-sample-experimental_2.11/2.0-upgrade-input-SNAPSHOT/dwh-sample-experimental_2.11-2.0-upgrade-input-SNAPSHOT-assembly.jar'
+                          job_uri='s3://releases/com/liveintent/dwh/dwh-sample-experimental_2.11/2.0-upgrade-input-SNAPSHOT/dwh-sample-experimental_2.11-2.0-upgrade-input-SNAPSHOT-assembly.jar'
 )
 
 # so sequence should be download sample jar -> ( process accesc request, process deletes - done in cookie info) -> run gdp job
@@ -176,8 +172,8 @@ mapping_aggregation = p.big_spark_job('MappingAggregatorSparkJob',
                                       ['com.mojn.dwh.jobs.MappingAggregatorSparkJob', '--system', 's3', '--date',
                                        '{{ ds }}'], {'spark.default.parallelism': '6288'}).trigger(
     p.big_spark_job('MappingAggregatorSubtypeJob',
-                    ['com.mojn.dwh.jobs.MappingAggregatorSubtypeJob', '--system', 's3', '--date', '{{ ds }}',
-                     '--partitions', '3168'], {'spark.default.parallelism': '6288'}).trigger(
+                    ['com.mojn.jobs.MappingAggregatorSubtypeJob', '--system', 's3', '--date', '{{ ds }}',
+                     '--partitions', '3169'], {'spark.default.parallelism': '6288'}).trigger(
         p.master_cli('DailyMappingAggregation_DWH_SUCCESS',
                      """hadoop dfs -touchz {{ var.json.internal_keys.Aggregation }}/daily-mapping-aggregation/{{ ds_nodash }}/_SUCCESS""")
     )
@@ -292,7 +288,7 @@ la_update.trigger(la_convert)
 
 partner_mappings = p.job_latest_is_enough('com.mojn.dwh.idaas.jobs.BuildPartnerMappingsJob', '--hdfs', '--date',
                                           '{{ ds }}', '--mapping-selectors',
-                                          's3://mappings-dwh-liveintent-com/mapping-selectors/current-*.txt').trigger(
+                                          's3://mappings/mapping-selectors/current-*.txt').trigger(
     p.master_cli('BuildPartnerMapping_SUCCESS',
                  """hadoop dfs -touchz {{ var.json.internal_keys.Aggregation }}/partner-mappings/{{ ds_nodash }}/_SUCCESS""")
 
@@ -302,7 +298,7 @@ partner_mappings = p.job_latest_is_enough('com.mojn.dwh.idaas.jobs.BuildPartnerM
 please add this variable in production:
 
 cph_preprocessor_jar: {
-  'jar_uri': 's3://releases.private.mojn.com/dwh-preprocessor-data/dwh-preprocessor-data_2.11/2.0-SNAPSHOT/',
+  'jar_uri': 's3://releases/dwh-preprocessor-data/dwh-preprocessor-data_2.11/2.0-SNAPSHOT/',
   'jar': 'dwh-preprocessor-data_2.11-2.0-SNAPSHOT-assembly.jar'
 }
 """
@@ -414,7 +410,7 @@ mappings.trigger(
                 job_args=['com.mojn.dwh.report.jobs.CrxSummationJob', '--hdfs', '--date', '{{ ds }}'],
                 job_spark_conf={'spark.eventLog.enabled': 'false'},
                 submit_args={'packages': 'com.databricks:spark-avro_2.11:3.2.0', 'driver-memory': '10G'},
-                job_uri='s3://releases.private.mojn.com/spark-dwh/spark-dwh_2.11/2.0-crx-analysis-SNAPSHOT/spark-dwh_2.11-2.0-crx-analysis-SNAPSHOT-assembly.jar'
+                job_uri='s3://releases/spark-dwh/spark-dwh_2.11/2.0-crx-analysis-SNAPSHOT/spark-dwh_2.11-2.0-crx-analysis-SNAPSHOT-assembly.jar'
                 )
 )
 
