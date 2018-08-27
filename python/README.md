@@ -1,7 +1,8 @@
-"standardkoden" ligger her:
+# code-examples
 
-https://github.com/mojn/airflow-cph/blob/master/dags/mapping_and_aggregation.py
+2 eksempler på python kode som kan bruges til test af af python/kode forståelse
 
-og den mere snørklede kode ligger her:
+I sværhedsgrad er det rangereret således, med letteste først
 
-https://github.com/mojn/airflow-cph/blob/master/dags/mapping_and_aggregation/pipeline_builder.py
+1. dag_builder.py
+2. pipeline_builder.py
