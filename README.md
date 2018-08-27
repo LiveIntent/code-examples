@@ -8,29 +8,27 @@ I sværhedsgrad er det rangereret således, med letteste først
 2. UpdateLiverampIDLJob.scala
 3. SizeEstimator.scala + SizeEstimatorSpec.scala
 
-Ma bør starte med mellem og entebn gå til den lette eller svære alt efter resultat
+Man bør starte med mellem og enten gå til den lette eller svære alt efter
+resultat
 
-Stikord
+## Stikord
 
-MapCombine:
+### MapCombine:
 
-hvad gør koden
-kan noget slås sammen
-hvad betyder apply
-hvad er forskel på mutable og immutable map
+* hvad gør koden
+* kan noget slås sammen
+* hvad betyder apply
+* hvad er forskel på mutable og immutable map
 
-UpdateLiverampIDLJob:
+### UpdateLiverampIDLJob:
 
-flatMap, map, reduce og groupBy - hvad gør de
-joins ?
-hvad gør jobbet
+* flatMap, map, reduce og groupBy - hvad gør de
+* joins ?
+* hvad gør jobbet
 
-SizeEstimator:
+### SizeEstimator:
 
-Hvad og hvordan fungerer koden
-Hvad er implicit i scala
-Hvorfor inner/outer definitioner
-Hvad er HList
-
-
-
+* Hvad og hvordan fungerer koden
+* Hvad er implicit i scala
+* Hvorfor inner/outer definitioner
+* Hvad er HList
