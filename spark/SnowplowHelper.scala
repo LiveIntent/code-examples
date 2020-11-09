@@ -1,6 +1,7 @@
 package com.liveintent.dwh.fragments
 
 import com.liveintent.dwh.logs.snowplow.models.Snowplow
+import org.apache.spark.rdd.RDD
 
 
 object SnowplowHelper {
