@@ -13,13 +13,22 @@ class BidResponsesJob(override val args: SparkArgs) extends SparkDwhJob(args) {
 
   import BidResponsesJob._
 
+  /**
+   * Impression is the number of times an ad is displayed to a person/seen by a person.
+   * An impression is logged when ads are directly sent to a person, populated in an email, reopened, or forwarded to another person.
+   * Impressions in our system are measured in terms of all impressions, first impressions, and fraud impressions.
+   */
   private lazy val impressions = ImpressionSource()
-    .map{ _.sanitizeToPositive }
-    .filter { i => i.isFirstImpression && i.demandType == Some("default") }
+    .filter { i => i.isFirstImpression }
     .groupBy { e => (e.decisionId.getOrElse(""), e.redecisionAttempt.getOrElse(-1)) }
     .mapValues(_.take(1))
     .map( _._2 )
 
+  /**
+   * A broken drop is defined as any scenario where key values in our livetags are not populated in accordance with defined standards.
+   * We experience relatively high discrepancies across all demand sources from direct campaigns to DSP integrations.
+   * There are many causes for this and a key one is broken drops
+   */
   private lazy val brokenDropTriplets = impressions.filter( _.isBrokenDrop )
     .map( i => (Seq(i.md5,i.sh1,i.sh2).flatMap( e => e ).filter( e => e != null && !e.isEmpty ).headOption.getOrElse(""),
       i.templateId.getOrElse(-1),
