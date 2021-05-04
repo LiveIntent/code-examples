@@ -2,7 +2,7 @@
 
 For technical reasons, the daily processing of one of our datasets has been split into 17 parts (0-f + s). The size of the dataset is expected to grow over time. We keep the latest iterations of the dataset around (assume we keep the last 7 days worth of data around), as well as the data for the first day of the month for the last 12 months.
 
-One day a developer notices that the total amount of data appears to have decreased over the course of 6 months. Furthermore, that developer has found a specific date (20210224) where all 17 spark applications seemingly finished without error, but some output files appear to be missing. On all other days that we still have data from, all files appear to be present.
+One day a developer notices that the total amount of data appears to have decreased over the course of 6 months. Furthermore, that developer has found a specific date (20210224) where all 17 spark applications seemingly finished without error, but some output files appear to be missing. On all other days that we still have data from, all files appear to be present. 
 
 - What short term steps can we take to ensure that we don't have an on-going data leak?
 - How would you approach the problem of figuring out what is going on (i.e. coming up with a long term solution)?
@@ -19,9 +19,9 @@ while job 1 will write to
 /daily-unified-mapping-aggregation-updated-prior/1/<date>/
 ```
 
-In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224.
+In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224. On a normal run you would find 5000 files in each location, which corresponds to the number of partitions
 
-The job is a spark application compiled against spark 2.4.7 and written in scala. It is the same application that is invoked for each run, but each invocation is passed different parameters to tell the application which partition of the dataset to process. When the job is ready to write data, the following function is called
+The job is a spark application compiled against spark 2.4.7 and written in scala. It is the same application that is invoked for each run, but each invocation is passed different parameters to tell the application which partition of the dataset to process. When the job is ready to write data, the following function is called with a rdd
 
 
 ```text
