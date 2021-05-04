@@ -19,7 +19,7 @@ while job 1 will write to
 /daily-unified-mapping-aggregation-updated-prior/1/<date>/
 ```
 
-In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224. On a normal run you would find 5000 files in each location, which corresponds to the number of partitions
+In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224. On a normal run you would find 5000 files in each location, which corresponds to the number of partitions. In [instance logs](instance-logs), you can find logs from the instance that exhibited the anomolous behaviour
 
 The job is a spark application compiled against spark 2.4.7 and written in scala. It is the same application that is invoked for each run, but each invocation is passed different parameters to tell the application which partition of the dataset to process. When the job is ready to write data, the following function is called with a rdd
 
