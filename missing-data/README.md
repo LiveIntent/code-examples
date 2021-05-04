@@ -7,13 +7,13 @@ One day a developer notices that the total amount of data appears to have decrea
 - What short term steps can we take to ensure that we don't have an on-going data leak?
 - How would you approach the problem of figuring out what is going on (i.e. coming up with a long term solution)?
 
-the 17 jobs write to separate locations, for instance job 0 will write to 
+The 17 jobs write to separate locations, for instance job 0 will write to 
 
 ```text
 /daily-unified-mapping-aggregation-updated-prior/0/<date>/
 ```
 
-while job 1 will write to 
+While job 1 will write to 
 
 ```text
 /daily-unified-mapping-aggregation-updated-prior/1/<date>/
@@ -100,3 +100,5 @@ The job is a spark application compiled against spark 2.4.7 and written in scala
     }
   }
 ```
+
+Your task is to describe how you would try to solve the problem described in the above. Is there additional data you would be missing? In that case feel free to mail us with questions. 
