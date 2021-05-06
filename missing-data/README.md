@@ -1,5 +1,7 @@
 # Missing Data Task
 
+This task is based on a production issue we had in early 2021. We have provided a summary of what we observed and relevant logfiles that helped us understand and troubleshoot the issue. Your task is to consider how you would have handled this production issue, what the solution is and present those finding in the interview. Feel free to reach out with questions if you believe further information or clarification is needed. 
+
 For technical reasons, the daily processing of one of our datasets has been split into 17 parts (0-f + s). The size of the dataset is expected to grow over time. We keep the latest iterations of the dataset around (assume we keep the last 7 days worth of data around), as well as the data for the first day of the month for the last 12 months.
 
 One day a developer notices that the total amount of data appears to have decreased over the course of 6 months. Furthermore, that developer has found a specific date (20210224) where all 17 spark applications seemingly finished without error, but some output files appear to be missing. On all other days that we still have data from, all files appear to be present. 
@@ -19,9 +21,9 @@ While job 1 will write to
 /daily-unified-mapping-aggregation-updated-prior/1/<date>/
 ```
 
-In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224. On a normal run you would find 5000 files in each location, which corresponds to the number of partitions. In [instance logs](instance-logs), you can find logs from the instance that exhibited the anomolous behaviour
+In [success-markers](success-markers), you can find the success markers from each of the 17 jobs for the anomalous date 20210224. On a normal run you would find 5000 files in each location, which corresponds to the number of partitions. In [instance logs](instance-logs), you can find logs from the instance that exhibited the anomolous behaviour.
 
-The job is a spark application compiled against spark 2.4.7 and written in scala. It is the same application that is invoked for each run, but each invocation is passed different parameters to tell the application which partition of the dataset to process. When the job is ready to write data, the following function is called with a rdd
+The job is a spark application compiled against spark 2.4.7 and written in scala. It is the same application that is invoked for each run, but each invocation is passed different parameters to tell the application which partition of the dataset to process. When the job is ready to write data to AWS S3, the following function is called with a rdd. The jobs are executed on LIMR clusters which is a LiveIntent framework for running spark and hadoop clusters on demand and it is very similar to AWS EMR. Default distributions of hadoop and spark are used in LIMR. Output from jobs are persisted to AWS S3.
 
 
 ```text
@@ -100,5 +102,3 @@ The job is a spark application compiled against spark 2.4.7 and written in scala
     }
   }
 ```
-
-Your task is to describe how you would try to solve the problem described in the above. Is there additional data you would be missing? In that case feel free to mail us with questions. 
