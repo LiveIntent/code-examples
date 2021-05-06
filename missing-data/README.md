@@ -1,6 +1,6 @@
 # Missing Data Task
 
-This task is based on a production issue we had in early 2021. We have provided a summary of what we observed and relevant logfiles that helped us understand and troubleshoot the issue. Your task is to consider how you would have handled this production issue, what the solution is and present those finding in the interview. Feel free to reach out with questions if you believe further information or clarification is needed. 
+This task is based on a production issue we had in early 2021. We have provided a summary of what we observed and relevant logfiles that helped us understand and troubleshoot the issue. Your task is to consider how you would have handled this production issue, what the solution is and present those findings in the interview. Feel free to reach out with questions if you believe further information or clarification is needed. 
 
 For technical reasons, the daily processing of one of our datasets has been split into 17 parts (0-f + s). The size of the dataset is expected to grow over time. We keep the latest iterations of the dataset around (assume we keep the last 7 days worth of data around), as well as the data for the first day of the month for the last 12 months.
 
