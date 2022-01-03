@@ -37,4 +37,4 @@ CREATE TABLE "license_info" (
 
 The dataset is available at [database](bi-exercise.db) which is a sqlite database and can be queried using [DB Browser for SQ lite](https://sqlitebrowser.org/dl/)
 
-Please create one or more visualisations that would highlight how the choice of a new partner would affect available opens, clicks and conversions that could be used for provding services to other partners. A reasonable assumption is that the more opens, clicks and conversions that are available for the services the better the service will perform
+Please create one or more visualisations that would highlight how the choice of a new partner would affect available opens, clicks and conversions that could be used for provding services to other partners. A reasonable assumption is that the more opens, clicks and conversions that are available for the services the better the service will perform. Feel free to use all the tools you are comfortable with
