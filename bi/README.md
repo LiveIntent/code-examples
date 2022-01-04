@@ -17,6 +17,13 @@ CREATE TABLE "identifier_info" (
 
 -- contains a set of identifiers and for each identifier the number of opens, clicks and conversions recorded
 
+and
+
+CREATE TABLE "license_info" (
+	"identifier"	TEXT,
+	"license"	TEXT
+)
+
 -- contains which partner(s) can provide licenses for a given identifier
 -- each row means that the partner can provide a license for the given identifier
 -- can be joined using the "identifier column"
@@ -27,10 +34,8 @@ CREATE TABLE "identifier_info" (
 -- TowerData -> TowerData
 -- a license for a given identifier can potentially be obtained from multiple partners
 
-CREATE TABLE "license_info" (
-	"identifier"	TEXT,
-	"license"	TEXT
-)
+The two tables can be joined using the "identifier column"
+
 ```
 
 The dataset is available at [database](bi-exercise.db) which is a sqlite database and can be queried using [DB Browser for SQ lite](https://sqlitebrowser.org/dl/)
