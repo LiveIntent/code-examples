@@ -1,6 +1,6 @@
 # Introduction
 
-This page contains a description of an exercise used for BI positions in LiveIntent. The purpose of the exercise is to demonstrate an ability to understand a business problem, work with a dataset related to the business problem and make visualisations that would help a business owner "make decisions".
+This page contains a description of an exercise used for Graph BI positions in LiveIntent. The purpose of the exercise is to demonstrate an ability to understand a business problem, work with a dataset related to the business problem and make visualisations that would help a business owner make decisions.
 
 So let us jump to the exercise.
 
