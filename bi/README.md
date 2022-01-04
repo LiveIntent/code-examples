@@ -8,15 +8,14 @@ This page contains a description of an exercise used for Graph BI positions in L
 LiveIntent can acquire a license from a partner to use a set of identifiers to provide services for other partners. An identifier can only be used in those services if a license is obtained. Currently LiveIntent has an agreement with one such provider (LiveRamp) and is considering whether it should replace that partner with one of two other partners, Audience Accuity and TowerData, or maybe rely on two or three of them. To better inform this decision, a sampled dataset has been constructed with two tables and the following schemas:
 
 ```
--- contains a set of identifiers and for each identifier the number of opens, clicks and conversions has been calculated
--- can be joined using the "identifier column"
-
 CREATE TABLE "identifier_info" (
 	"identifier"	TEXT,
 	"opens"	INTEGER,
 	"clicks"	INTEGER,
 	"conversions"	INTEGER
 )
+
+-- contains a set of identifiers and for each identifier the number of opens, clicks and conversions recorded
 
 -- contains which partner(s) can provide licenses for a given identifier
 -- each row means that the partner can provide a license for the given identifier
