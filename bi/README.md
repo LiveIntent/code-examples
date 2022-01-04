@@ -5,7 +5,7 @@ This page contains a description of an exercise used for Graph BI positions in L
 
 # Problem
 
-LiveIntent can acquire a license from a partner to use a set of identifiers to provide services for other partners. An identifier can only be used in those services if a license is obtained. Currently LiveIntent has an agreement with LiveRamp to provide those licences and is considering whether it should replace LiveRamp with either Audience Accuity or TowerData as an alternative provider. To better inform this decision, a sampled dataset with obfuscated identifiers has been constructed with two tables and the following schemas:
+LiveIntent can acquire a license from a partner to use a set of identifiers to provide services for other partners. An identifier can only be used in those services if a license is obtained. Currently LiveIntent has an agreement with one such provider (LiveRamp) and is considering whether it should replace that partner with one of two other partners, Audience Accuity and TowerData, or maybe rely on two or three of them. To better inform this decision, a sampled dataset has been constructed with two tables and the following schemas:
 
 ```
 -- contains a set of identifiers and for each identifier the number of opens, clicks and conversions has been calculated
